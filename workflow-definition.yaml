@@ -1,0 +1,45 @@
+main:
+    params: [args]
+    steps:
+        - setup_variables:
+            #define and assign variables for use in the workflow
+            assign:
+                - version: 100                  #can be numbers
+                - filename: ${args.data.name}   #name of doc
+        - log_receipt:
+            #write a log to share that we started up
+            call: sys.log          
+            args:
+                text: ${"Loan doc received"}
+        - extract_loan_number:
+            #pull out substring containing loan number
+            assign:
+                - loan_number : ${text.substring(filename, 5, 8)}
+        - create_callback:
+            #establish a callback endpoint
+            call: events.create_callback_endpoint
+            args:
+                http_callback_method: "POST"
+            result: callback_details
+        - print_callback_details:
+            #print out formatted URL
+            call: sys.log
+            args:
+                severity: "INFO"
+                # update with the URL of your Cloud Run service
+                text: ${"Callback URL is https://go-workflow-callback-ofanvtevaa-uw.a.run.app?loanid="+ loan_number +"&callbackurl=" + callback_details.url}
+        - await_callback:
+            #wait impatiently
+            call: events.await_callback
+            args:
+                callback: ${callback_details}
+                timeout: 3600
+            result: callback_request
+        - print_callback_request:
+            #wlog the result
+            call: sys.log
+            args:
+                severity: "INFO"
+                text: ${"Received " + json.encode_to_string(callback_request.http_request)}
+        - return_callback_result:
+            return: ${callback_request.http_request}
