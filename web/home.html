@@ -1,0 +1,29 @@
+{{define "home"}}
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Loan Processing Acknowledgement</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    </head>
+   
+    <body style="background-color:lightgray">
+        <div class="container" style="background-color:white">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-6 text-center">
+                    <h1 class="display-4">Loan Application Received</h1><br /><br />
+                    <form action="/ack" method="POST">
+                        <h2>Approve loan number: {{.LoanId}}</h2>
+                        <input type="hidden" name="loanid" value={{.LoanId}}>
+                        <input type="hidden" name="callbackurl" value={{.CallbackUrl}}>
+                        <input type="submit" class="btn btn-primary btn-lg" value="Acknowledge Loan Submission" />
+                    </form><br/><br />
+                    <i>Callback url is: {{.CallbackUrl}}</i>
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
+       
+    </body>
+</html>
+{{end}}
