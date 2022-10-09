@@ -27,7 +27,7 @@ main:
             args:
                 severity: "INFO"
                 # update with the URL of your Cloud Run service
-                text: ${"Callback URL is https://go-workflow-callback-ofanvtevaa-uw.a.run.app?loanid="+ loan_number +"&callbackurl=" + callback_details.url}
+                text: ${"Callback URL is https://[INSERT CLOUD RUN URL]?loanid="+ loan_number +"&callbackurl=" + callback_details.url}
         - await_callback:
             #wait impatiently
             call: events.await_callback
