@@ -55,10 +55,6 @@ func main() {
 	e.Renderer = t
 	e.GET("/", func(c echo.Context) error {
 
-		//wf := WorkflowData{ExecutionId: c.QueryParam("executionid"), CallbackId: c.QueryParam("callbackid")}
-		//s := c.QueryParam("executionid")
-		//fmt.Println(s)
-
 		//load up object with querystring parameters
 		wf := workflowdata{LoanId: c.QueryParam("loanid"), CallbackUrl: c.QueryParam("callbackurl")}
 
